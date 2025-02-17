@@ -1,18 +1,31 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { CalendarIcon, PlusCircle, Trash2 } from "lucide-react";
-import { ReimbursementEntry } from "@/types/reimbursement";
+import { ReimbursementEntry, ReimbursementRequest } from "@/types/reimbursement";
 
-export const ReimbursementForm = () => {
+interface ReimbursementFormProps {
+  initialData?: ReimbursementRequest;
+}
+
+export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
   const [name, setName] = useState("");
   const [periodStart, setPeriodStart] = useState("");
   const [periodEnd, setPeriodEnd] = useState("");
   const [entries, setEntries] = useState<Partial<ReimbursementEntry>[]>([{ id: 1 }]);
+
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.name);
+      setPeriodStart(initialData.periodStart);
+      setPeriodEnd(initialData.periodEnd);
+      setEntries(initialData.entries);
+    }
+  }, [initialData]);
 
   const handleAddRow = () => {
     setEntries([...entries, { id: entries.length + 1 }]);
@@ -52,19 +65,23 @@ export const ReimbursementForm = () => {
 
     // Here we would typically send the data to a backend
     toast({
-      title: "Request Submitted",
-      description: "Your reimbursement request has been submitted successfully."
+      title: initialData ? "Request Updated" : "Request Submitted",
+      description: initialData 
+        ? "Your reimbursement request has been updated successfully."
+        : "Your reimbursement request has been submitted successfully."
     });
 
-    // Reset form
-    setName("");
-    setPeriodStart("");
-    setPeriodEnd("");
-    setEntries([{ id: 1 }]);
+    // Reset form if it's not an edit
+    if (!initialData) {
+      setName("");
+      setPeriodStart("");
+      setPeriodEnd("");
+      setEntries([{ id: 1 }]);
+    }
   };
 
   return (
-    <Card className="p-6 max-w-6xl mx-auto bg-white shadow-sm">
+    <Card className="p-6 bg-white shadow-sm">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
@@ -199,7 +216,9 @@ export const ReimbursementForm = () => {
             <PlusCircle className="h-4 w-4" />
             Add Row
           </Button>
-          <Button type="submit">Submit Request</Button>
+          <Button type="submit">
+            {initialData ? "Update Request" : "Submit Request"}
+          </Button>
         </div>
       </form>
     </Card>
