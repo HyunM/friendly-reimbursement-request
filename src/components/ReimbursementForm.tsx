@@ -91,7 +91,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
-              className="mt-1"
+              className="mt-1 min-w-[200px]"
             />
           </div>
           <div>
@@ -102,7 +102,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                 type="date"
                 value={periodStart}
                 onChange={(e) => setPeriodStart(e.target.value)}
-                className="mt-1"
+                className="mt-1 min-w-[200px]"
               />
               <CalendarIcon className="absolute right-3 top-[60%] transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
@@ -115,7 +115,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                 type="date"
                 value={periodEnd}
                 onChange={(e) => setPeriodEnd(e.target.value)}
-                className="mt-1"
+                className="mt-1 min-w-[200px]"
               />
               <CalendarIcon className="absolute right-3 top-[60%] transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
@@ -126,15 +126,15 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
           <table className="w-full mt-4">
             <thead>
               <tr className="border-b">
-                <th className="px-4 py-2 text-left">No.</th>
-                <th className="px-4 py-2 text-left">Date</th>
-                <th className="px-4 py-2 text-left">Payee</th>
-                <th className="px-4 py-2 text-left">Description</th>
-                <th className="px-4 py-2 text-left">Expenses</th>
-                <th className="px-4 py-2 text-left">Income</th>
-                <th className="px-4 py-2 text-left">Balance</th>
-                <th className="px-4 py-2 text-left">Job No.</th>
-                <th className="px-4 py-2 text-left">Actions</th>
+                <th className="px-4 py-2 text-left w-12">No.</th>
+                <th className="px-4 py-2 text-left w-36">Date</th>
+                <th className="px-4 py-2 text-left w-48">Payee</th>
+                <th className="px-4 py-2 text-left w-60">Description</th>
+                <th className="px-4 py-2 text-left w-32">Expenses</th>
+                <th className="px-4 py-2 text-left w-32">Income</th>
+                <th className="px-4 py-2 text-left w-32">Balance</th>
+                <th className="px-4 py-2 text-left w-24">Job No.</th>
+                <th className="px-4 py-2 text-left w-20">Actions</th>
               </tr>
             </thead>
             <tbody>
