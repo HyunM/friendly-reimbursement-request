@@ -10,9 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { ReimbursementRequest } from "@/types/reimbursement";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, Eye, XCircle } from "lucide-react";
 
 // Mock data for demonstration
 const mockRequests: ReimbursementRequest[] = [
@@ -41,6 +47,8 @@ const mockRequests: ReimbursementRequest[] = [
 
 const HRDashboard = () => {
   const [requests, setRequests] = useState(mockRequests);
+  const [selectedRequest, setSelectedRequest] = useState<ReimbursementRequest | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   const handleApprove = (id: string) => {
     setRequests(requests.map(req => 
@@ -60,6 +68,11 @@ const HRDashboard = () => {
       title: "Request Denied",
       description: "The reimbursement request has been denied."
     });
+  };
+
+  const handleViewDetail = (request: ReimbursementRequest) => {
+    setSelectedRequest(request);
+    setIsDetailOpen(true);
   };
 
   return (
@@ -107,6 +120,14 @@ const HRDashboard = () => {
                       <Button
                         variant="ghost"
                         size="sm"
+                        onClick={() => handleViewDetail(request)}
+                        className="text-gray-600 hover:text-gray-700"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() => handleApprove(request.id)}
                         disabled={request.status !== 'pending'}
                         className="text-green-600 hover:text-green-700"
@@ -129,6 +150,75 @@ const HRDashboard = () => {
             </TableBody>
           </Table>
         </Card>
+
+        <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+          <DialogContent className="max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>Reimbursement Request Details</DialogTitle>
+            </DialogHeader>
+            {selectedRequest && (
+              <div className="mt-4">
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Name</p>
+                    <p className="mt-1">{selectedRequest.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Period</p>
+                    <p className="mt-1">
+                      {new Date(selectedRequest.periodStart).toLocaleDateString()} - 
+                      {new Date(selectedRequest.periodEnd).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Status</p>
+                    <span className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      ${selectedRequest.status === 'approved' ? 'bg-green-100 text-green-800' :
+                        selectedRequest.status === 'denied' ? 'bg-red-100 text-red-800' :
+                          'bg-yellow-100 text-yellow-800'}`}>
+                      {selectedRequest.status.charAt(0).toUpperCase() + selectedRequest.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Payee</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Expenses</TableHead>
+                        <TableHead>Income</TableHead>
+                        <TableHead>Balance</TableHead>
+                        <TableHead>Job No.</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {selectedRequest.entries.map((entry) => (
+                        <TableRow key={entry.id}>
+                          <TableCell>{new Date(entry.date).toLocaleDateString()}</TableCell>
+                          <TableCell>{entry.payee}</TableCell>
+                          <TableCell>{entry.description}</TableCell>
+                          <TableCell>${entry.expenses.toFixed(2)}</TableCell>
+                          <TableCell>${entry.income.toFixed(2)}</TableCell>
+                          <TableCell>${entry.balance.toFixed(2)}</TableCell>
+                          <TableCell>{entry.jobNo}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                <div className="mt-4 text-right">
+                  <p className="text-lg font-semibold">
+                    Total Amount: ${selectedRequest.entries.reduce((sum, entry) => sum + entry.balance, 0).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
