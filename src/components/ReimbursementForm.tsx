@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { CalendarIcon, PlusCircle } from "lucide-react";
+import { CalendarIcon, PlusCircle, Trash2 } from "lucide-react";
 import { ReimbursementEntry } from "@/types/reimbursement";
 
 interface ReimbursementFormProps {
@@ -27,6 +27,18 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
 
   const handleAddRow = () => {
     setEntries([...entries, { id: entries.length + 1 }]);
+  };
+
+  const handleRemoveRow = (id: number) => {
+    if (entries.length === 1) {
+      toast({
+        title: "Cannot Remove Row",
+        description: "At least one row must remain in the form.",
+        variant: "destructive"
+      });
+      return;
+    }
+    setEntries(entries.filter(entry => entry.id !== id));
   };
 
   const handleEntryChange = (id: number, field: keyof ReimbursementEntry, value: string) => {
@@ -113,6 +125,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
               <th className="py-3 text-left text-sm font-medium text-gray-500">Income</th>
               <th className="py-3 text-left text-sm font-medium text-gray-500">Balance</th>
               <th className="py-3 text-left text-sm font-medium text-gray-500">Job No.</th>
+              <th className="py-3 text-left text-sm font-medium text-gray-500">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -166,6 +179,17 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                     onChange={(e) => handleEntryChange(entry.id!, 'jobNo', e.target.value)}
                     className="w-full"
                   />
+                </td>
+                <td className="py-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleRemoveRow(entry.id!)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </td>
               </tr>
             ))}
