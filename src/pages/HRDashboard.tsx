@@ -42,6 +42,91 @@ const mockRequests: ReimbursementRequest[] = [
     ],
     status: "pending",
     createdAt: "2024-03-16"
+  },
+  {
+    id: "2",
+    name: "Jane Smith",
+    periodStart: "2024-03-01",
+    periodEnd: "2024-03-31",
+    entries: [
+      {
+        id: 1,
+        date: "2024-03-10",
+        payee: "Travel Agency",
+        description: "Business Trip",
+        expenses: 500.00,
+        income: 0,
+        balance: 500.00,
+        jobNo: "6991",
+        status: "approved"
+      },
+      {
+        id: 2,
+        date: "2024-03-12",
+        payee: "Restaurant",
+        description: "Client Meeting",
+        expenses: 75.00,
+        income: 0,
+        balance: 75.00,
+        jobNo: "6991",
+        status: "approved"
+      }
+    ],
+    status: "approved",
+    createdAt: "2024-03-12"
+  },
+  {
+    id: "3",
+    name: "Mike Johnson",
+    periodStart: "2024-02-01",
+    periodEnd: "2024-02-29",
+    entries: [
+      {
+        id: 1,
+        date: "2024-02-20",
+        payee: "Hardware Store",
+        description: "Equipment",
+        expenses: 299.99,
+        income: 0,
+        balance: 299.99,
+        jobNo: "6991",
+        status: "denied"
+      }
+    ],
+    status: "denied",
+    createdAt: "2024-02-22"
+  },
+  {
+    id: "4",
+    name: "Sarah Williams",
+    periodStart: "2024-03-01",
+    periodEnd: "2024-03-31",
+    entries: [
+      {
+        id: 1,
+        date: "2024-03-18",
+        payee: "Print Shop",
+        description: "Marketing Materials",
+        expenses: 250.00,
+        income: 0,
+        balance: 250.00,
+        jobNo: "6991",
+        status: "pending"
+      },
+      {
+        id: 2,
+        date: "2024-03-19",
+        payee: "Office Depot",
+        description: "Office Supplies",
+        expenses: 125.50,
+        income: 0,
+        balance: 125.50,
+        jobNo: "6991",
+        status: "pending"
+      }
+    ],
+    status: "pending",
+    createdAt: "2024-03-19"
   }
 ];
 
