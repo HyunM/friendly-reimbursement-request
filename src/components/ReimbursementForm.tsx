@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,26 +112,26 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="py-3 text-left text-sm font-medium text-gray-500">No.</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Date</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Payee</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Description</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Expenses</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Income</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Balance</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Job No.</th>
-              <th className="py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">No.</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Date</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Payee</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Description</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Expenses</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Income</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Balance</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Job No.</th>
+              <th className="py-3 px-4 text-left text-sm font-medium text-gray-500 whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
             {entries.map((entry) => (
               <tr key={entry.id} className="border-b border-gray-100">
-                <td className="py-2 text-sm">{entry.id}</td>
-                <td className="py-2">
+                <td className="py-2 px-4 text-sm">{entry.id}</td>
+                <td className="py-2 px-4">
                   <Input
                     type="date"
                     value={entry.date || ""}
@@ -140,21 +139,21 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                     className="w-full"
                   />
                 </td>
-                <td className="py-2">
+                <td className="py-2 px-4">
                   <Input
                     value={entry.payee || ""}
                     onChange={(e) => handleEntryChange(entry.id!, 'payee', e.target.value)}
                     className="w-full"
                   />
                 </td>
-                <td className="py-2">
+                <td className="py-2 px-4">
                   <Input
                     value={entry.description || ""}
                     onChange={(e) => handleEntryChange(entry.id!, 'description', e.target.value)}
                     className="w-full"
                   />
                 </td>
-                <td className="py-2">
+                <td className="py-2 px-4">
                   <Input
                     type="number"
                     value={entry.expenses || ""}
@@ -162,7 +161,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                     className="w-full"
                   />
                 </td>
-                <td className="py-2">
+                <td className="py-2 px-4">
                   <Input
                     type="number"
                     value={entry.income || ""}
@@ -170,17 +169,17 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                     className="w-full"
                   />
                 </td>
-                <td className="py-2 text-sm">
+                <td className="py-2 px-4 text-sm">
                   ${entry.balance?.toFixed(2) || "0.00"}
                 </td>
-                <td className="py-2">
+                <td className="py-2 px-4">
                   <Input
                     value={entry.jobNo || ""}
                     onChange={(e) => handleEntryChange(entry.id!, 'jobNo', e.target.value)}
                     className="w-full"
                   />
                 </td>
-                <td className="py-2">
+                <td className="py-2 px-4">
                   <Button
                     type="button"
                     variant="ghost"
