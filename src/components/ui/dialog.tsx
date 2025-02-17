@@ -32,8 +32,9 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 w-[80%] -translate-x-1/2 -translate-y-1/2",
-        "h-[90vh] max-h-[90vh] overflow-y-auto",
+        "fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
+        "w-[90%] max-w-[1400px]", // 최대 너비 설정
+        "h-[90vh] overflow-y-auto",
         "bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl",
         "animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%]",
         className
