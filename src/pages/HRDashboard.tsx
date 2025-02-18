@@ -37,10 +37,10 @@ const mockRequests: ReimbursementRequest[] = [
         income: 0,
         balance: 150.00,
         jobNo: "6991",
-        status: "pending"
+        status: "pending" as const
       }
     ],
-    status: "pending",
+    status: "pending" as const,
     createdAt: "2024-03-16"
   },
   {
@@ -58,7 +58,7 @@ const mockRequests: ReimbursementRequest[] = [
         income: 0,
         balance: 250.00,
         jobNo: "6991",
-        status: "pending"
+        status: "pending" as const
       },
       {
         id: 2,
@@ -69,10 +69,10 @@ const mockRequests: ReimbursementRequest[] = [
         income: 0,
         balance: 125.50,
         jobNo: "6991",
-        status: "pending"
+        status: "pending" as const
       }
     ],
-    status: "pending",
+    status: "pending" as const,
     createdAt: "2024-03-19"
   }
 ].filter(request => request.status === 'pending');
