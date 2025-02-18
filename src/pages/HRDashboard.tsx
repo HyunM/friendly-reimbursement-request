@@ -44,59 +44,6 @@ const mockRequests: ReimbursementRequest[] = [
     createdAt: "2024-03-16"
   },
   {
-    id: "2",
-    name: "Jane Smith",
-    periodStart: "2024-03-01",
-    periodEnd: "2024-03-31",
-    entries: [
-      {
-        id: 1,
-        date: "2024-03-10",
-        payee: "Travel Agency",
-        description: "Business Trip",
-        expenses: 500.00,
-        income: 0,
-        balance: 500.00,
-        jobNo: "6991",
-        status: "approved"
-      },
-      {
-        id: 2,
-        date: "2024-03-12",
-        payee: "Restaurant",
-        description: "Client Meeting",
-        expenses: 75.00,
-        income: 0,
-        balance: 75.00,
-        jobNo: "6991",
-        status: "approved"
-      }
-    ],
-    status: "approved",
-    createdAt: "2024-03-12"
-  },
-  {
-    id: "3",
-    name: "Mike Johnson",
-    periodStart: "2024-02-01",
-    periodEnd: "2024-02-29",
-    entries: [
-      {
-        id: 1,
-        date: "2024-02-20",
-        payee: "Hardware Store",
-        description: "Equipment",
-        expenses: 299.99,
-        income: 0,
-        balance: 299.99,
-        jobNo: "6991",
-        status: "denied"
-      }
-    ],
-    status: "denied",
-    createdAt: "2024-02-22"
-  },
-  {
     id: "4",
     name: "Sarah Williams",
     periodStart: "2024-03-01",
@@ -128,7 +75,7 @@ const mockRequests: ReimbursementRequest[] = [
     status: "pending",
     createdAt: "2024-03-19"
   }
-];
+].filter(request => request.status === 'pending');
 
 const HRDashboard = () => {
   const [requests, setRequests] = useState(mockRequests);
@@ -136,9 +83,7 @@ const HRDashboard = () => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   const handleApprove = (id: string) => {
-    setRequests(requests.map(req => 
-      req.id === id ? { ...req, status: 'approved' as const } : req
-    ));
+    setRequests(requests.filter(req => req.id !== id));
     toast({
       title: "Request Approved",
       description: "The reimbursement request has been approved."
@@ -146,9 +91,7 @@ const HRDashboard = () => {
   };
 
   const handleDeny = (id: string) => {
-    setRequests(requests.map(req => 
-      req.id === id ? { ...req, status: 'denied' as const } : req
-    ));
+    setRequests(requests.filter(req => req.id !== id));
     toast({
       title: "Request Denied",
       description: "The reimbursement request has been denied."
@@ -165,7 +108,7 @@ const HRDashboard = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-gray-900">HR Dashboard</h1>
-          <p className="mt-2 text-gray-600">Review and manage reimbursement requests.</p>
+          <p className="mt-2 text-gray-600">Review pending reimbursement requests.</p>
         </div>
 
         <Card className="p-6">
@@ -175,7 +118,6 @@ const HRDashboard = () => {
                 <TableHead>Name</TableHead>
                 <TableHead>Period</TableHead>
                 <TableHead>Total Amount</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead>Created At</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -190,14 +132,6 @@ const HRDashboard = () => {
                   </TableCell>
                   <TableCell>
                     ${request.entries.reduce((sum, entry) => sum + entry.balance, 0).toFixed(2)}
-                  </TableCell>
-                  <TableCell>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                      ${request.status === 'approved' ? 'bg-green-100 text-green-800' :
-                        request.status === 'denied' ? 'bg-red-100 text-red-800' :
-                          'bg-yellow-100 text-yellow-800'}`}>
-                      {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-                    </span>
                   </TableCell>
                   <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>
@@ -214,7 +148,6 @@ const HRDashboard = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleApprove(request.id)}
-                        disabled={request.status !== 'pending'}
                         className="text-green-600 hover:text-green-700"
                       >
                         <CheckCircle2 className="h-4 w-4" />
@@ -223,7 +156,6 @@ const HRDashboard = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeny(request.id)}
-                        disabled={request.status !== 'pending'}
                         className="text-red-600 hover:text-red-700"
                       >
                         <XCircle className="h-4 w-4" />
@@ -257,11 +189,8 @@ const HRDashboard = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500">Status</p>
-                    <span className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                      ${selectedRequest.status === 'approved' ? 'bg-green-100 text-green-800' :
-                        selectedRequest.status === 'denied' ? 'bg-red-100 text-red-800' :
-                          'bg-yellow-100 text-yellow-800'}`}>
-                      {selectedRequest.status.charAt(0).toUpperCase() + selectedRequest.status.slice(1)}
+                    <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                      Pending
                     </span>
                   </div>
                 </div>
