@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,16 +11,14 @@ import { ReimbursementEntry } from "@/types/reimbursement";
 interface ReimbursementFormProps {
   initialData?: {
     name: string;
-    periodStart: string;
-    periodEnd: string;
+    date: string;
     entries: ReimbursementEntry[];
   };
 }
 
 export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
   const [name, setName] = useState(initialData?.name || "");
-  const [periodStart, setPeriodStart] = useState(initialData?.periodStart || "");
-  const [periodEnd, setPeriodEnd] = useState(initialData?.periodEnd || "");
+  const [date, setDate] = useState(initialData?.date || "");
   const [entries, setEntries] = useState<Partial<ReimbursementEntry>[]>(
     initialData?.entries || [{ id: 1 }]
   );
@@ -57,7 +56,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !periodStart || !periodEnd) {
+    if (!name || !date) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
@@ -74,7 +73,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-6">
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
           <Input
@@ -85,26 +84,13 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="periodStart">Period Start</Label>
+          <Label htmlFor="date">Date</Label>
           <div className="relative">
             <Input
-              id="periodStart"
+              id="date"
               type="date"
-              value={periodStart}
-              onChange={(e) => setPeriodStart(e.target.value)}
-              className="w-full"
-            />
-            <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 pointer-events-none" />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="periodEnd">Period End</Label>
-          <div className="relative">
-            <Input
-              id="periodEnd"
-              type="date"
-              value={periodEnd}
-              onChange={(e) => setPeriodEnd(e.target.value)}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               className="w-full"
             />
             <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 pointer-events-none" />

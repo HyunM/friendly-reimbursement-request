@@ -25,8 +25,7 @@ const mockRequests: ReimbursementRequest[] = [
   {
     id: "1",
     name: "John Doe",
-    periodStart: "2024-03-01",
-    periodEnd: "2024-03-31",
+    date: "2024-03-15",
     entries: [
       {
         id: 1,
@@ -46,8 +45,7 @@ const mockRequests: ReimbursementRequest[] = [
   {
     id: "4",
     name: "Sarah Williams",
-    periodStart: "2024-03-01",
-    periodEnd: "2024-03-31",
+    date: "2024-03-18",
     entries: [
       {
         id: 1,
@@ -116,7 +114,7 @@ const HRDashboard = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Period</TableHead>
+                <TableHead>Date</TableHead>
                 <TableHead>Total Amount</TableHead>
                 <TableHead>Created At</TableHead>
                 <TableHead>Actions</TableHead>
@@ -127,8 +125,7 @@ const HRDashboard = () => {
                 <TableRow key={request.id}>
                   <TableCell>{request.name}</TableCell>
                   <TableCell>
-                    {new Date(request.periodStart).toLocaleDateString()} - 
-                    {new Date(request.periodEnd).toLocaleDateString()}
+                    {new Date(request.date).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
                     ${request.entries.reduce((sum, entry) => sum + entry.balance, 0).toFixed(2)}
@@ -181,10 +178,9 @@ const HRDashboard = () => {
                     <p className="mt-1">{selectedRequest.name}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Period</p>
+                    <p className="text-sm font-medium text-gray-500">Date</p>
                     <p className="mt-1">
-                      {new Date(selectedRequest.periodStart).toLocaleDateString()} - 
-                      {new Date(selectedRequest.periodEnd).toLocaleDateString()}
+                      {new Date(selectedRequest.date).toLocaleDateString()}
                     </p>
                   </div>
                   <div>

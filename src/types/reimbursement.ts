@@ -14,8 +14,7 @@ export interface ReimbursementEntry {
 export interface ReimbursementRequest {
   id: string;
   name: string;
-  periodStart: string;
-  periodEnd: string;
+  date: string;  // periodStart, periodEnd를 date로 변경
   entries: ReimbursementEntry[];
   status: 'pending' | 'approved' | 'denied';
   createdAt: string;
