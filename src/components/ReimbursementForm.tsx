@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { CalendarIcon, PlusCircle, Trash2 } from "lucide-react";
+import { CalendarIcon, PlusCircle, Trash2, Paperclip } from "lucide-react";
 import { ReimbursementEntry } from "@/types/reimbursement";
 
 interface ReimbursementFormProps {
@@ -39,15 +39,23 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
     setEntries(entries.filter(entry => entry.id !== id));
   };
 
-  const handleEntryChange = (id: number, field: keyof ReimbursementEntry, value: string) => {
+  const handleEntryChange = (id: number, field: keyof ReimbursementEntry, value: string | File) => {
     setEntries(entries.map(entry => {
       if (entry.id === id) {
-        const updatedEntry = { ...entry, [field]: value };
-        if (field === 'expenses' || field === 'income') {
-          const expenses = parseFloat(updatedEntry.expenses?.toString() || '0');
-          const income = parseFloat(updatedEntry.income?.toString() || '0');
-          updatedEntry.balance = expenses - income;
+        let updatedEntry = { ...entry };
+        
+        if (field === 'attachmentFile' && value instanceof File) {
+          updatedEntry.attachmentFile = value;
+          updatedEntry.attachmentName = value.name;
+        } else if (typeof value === 'string') {
+          updatedEntry = { ...entry, [field]: value };
+          if (field === 'expenses' || field === 'income') {
+            const expenses = parseFloat(updatedEntry.expenses?.toString() || '0');
+            const income = parseFloat(updatedEntry.income?.toString() || '0');
+            updatedEntry.balance = expenses - income;
+          }
         }
+        
         return updatedEntry;
       }
       return entry;
@@ -69,6 +77,12 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
       title: initialData ? "Request Updated" : "Request Submitted",
       description: "Your reimbursement request has been processed successfully."
     });
+  };
+
+  const handleFileChange = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      handleEntryChange(id, 'attachmentFile', e.target.files[0]);
+    }
   };
 
   return (
@@ -110,6 +124,7 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-500 whitespace-nowrap w-32">Income</th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-500 whitespace-nowrap w-32">Balance</th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-500 whitespace-nowrap w-32">Job No.</th>
+              <th className="py-3 px-6 text-left text-sm font-medium text-gray-500 whitespace-nowrap w-40">Attachment</th>
               <th className="py-3 px-6 text-left text-sm font-medium text-gray-500 whitespace-nowrap w-20">Actions</th>
             </tr>
           </thead>
@@ -164,6 +179,27 @@ export const ReimbursementForm = ({ initialData }: ReimbursementFormProps) => {
                     onChange={(e) => handleEntryChange(entry.id!, 'jobNo', e.target.value)}
                     className="w-full"
                   />
+                </td>
+                <td className="py-2 px-6">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="file"
+                      onChange={(e) => handleFileChange(entry.id!, e)}
+                      className="hidden"
+                      id={`file-${entry.id}`}
+                      accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="w-full flex items-center gap-2"
+                      onClick={() => document.getElementById(`file-${entry.id}`)?.click()}
+                    >
+                      <Paperclip className="h-4 w-4" />
+                      {entry.attachmentName || "Attach File"}
+                    </Button>
+                  </div>
                 </td>
                 <td className="py-2 px-6">
                   <Button

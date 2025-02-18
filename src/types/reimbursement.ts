@@ -9,12 +9,14 @@ export interface ReimbursementEntry {
   balance: number;
   jobNo: string;
   status: 'pending' | 'approved' | 'denied';
+  attachmentFile?: File;
+  attachmentName?: string;
 }
 
 export interface ReimbursementRequest {
   id: string;
   name: string;
-  date: string;  // periodStart, periodEnd를 date로 변경
+  date: string;
   entries: ReimbursementEntry[];
   status: 'pending' | 'approved' | 'denied';
   createdAt: string;
