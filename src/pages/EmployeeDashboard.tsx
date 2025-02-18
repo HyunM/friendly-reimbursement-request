@@ -25,8 +25,7 @@ const mockRequests: ReimbursementRequest[] = [
   {
     id: "1",
     name: "John Doe",
-    periodStart: "2024-03-01",
-    periodEnd: "2024-03-31",
+    date: "2024-03-15",
     entries: [
       {
         id: 1,
@@ -46,8 +45,7 @@ const mockRequests: ReimbursementRequest[] = [
   {
     id: "2",
     name: "John Doe",
-    periodStart: "2024-02-01",
-    periodEnd: "2024-02-29",
+    date: "2024-02-15",
     entries: [
       {
         id: 1,
@@ -95,7 +93,7 @@ const EmployeeDashboard = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Period</TableHead>
+                <TableHead>Date</TableHead>
                 <TableHead>Total Amount</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Created At</TableHead>
@@ -106,8 +104,7 @@ const EmployeeDashboard = () => {
               {requests.map((request) => (
                 <TableRow key={request.id}>
                   <TableCell>
-                    {new Date(request.periodStart).toLocaleDateString()} - 
-                    {new Date(request.periodEnd).toLocaleDateString()}
+                    {new Date(request.date).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
                     ${request.entries.reduce((sum, entry) => sum + entry.balance, 0).toFixed(2)}
