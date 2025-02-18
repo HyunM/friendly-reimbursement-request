@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { ReimbursementRequest } from "@/types/reimbursement";
-import { CheckCircle2, Eye, XCircle } from "lucide-react";
+import { CheckCircle2, Eye, XCircle, Paperclip } from "lucide-react";
 
 // Mock data for demonstration
 const mockRequests: ReimbursementRequest[] = [
@@ -99,6 +99,15 @@ const HRDashboard = () => {
   const handleViewDetail = (request: ReimbursementRequest) => {
     setSelectedRequest(request);
     setIsDetailOpen(true);
+  };
+
+  const handleOpenAttachment = (file: File | undefined) => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      window.open(url, '_blank');
+      // Clean up the URL after opening
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
   };
 
   return (
@@ -202,6 +211,7 @@ const HRDashboard = () => {
                         <TableHead>Income</TableHead>
                         <TableHead>Balance</TableHead>
                         <TableHead>Job No.</TableHead>
+                        <TableHead>Attachment</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -214,6 +224,19 @@ const HRDashboard = () => {
                           <TableCell>${entry.income.toFixed(2)}</TableCell>
                           <TableCell>${entry.balance.toFixed(2)}</TableCell>
                           <TableCell>{entry.jobNo}</TableCell>
+                          <TableCell>
+                            {entry.attachmentFile && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleOpenAttachment(entry.attachmentFile)}
+                                className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                              >
+                                <Paperclip className="h-4 w-4" />
+                                {entry.attachmentName}
+                              </Button>
+                            )}
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
